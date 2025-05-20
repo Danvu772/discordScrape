@@ -37,3 +37,10 @@ discord_channel_link='https://discord.com/channels/random_numbers/more_random_nu
 ## Actually using this
 1. After your setup, run `python discordScrape.py` in the terminal in your project root directory
 2. The scraping will take a while, after the scrape, run `python tableParse.py`
+
+
+# Todos
+- Fix variable names
+- ~~Implement sync - implemented, time to test it~~
+- Fix reply id - it seems to be getting the message content instead
+- Fix end of chat scraping

@@ -1,41 +1,26 @@
 import pandas as pd
 
-df = pd.read_json('../resources/json/table_messages.json', orient='records')
+def replaceName(json_path):
+    df = pd.read_json(json_path, dtype=False)
+    df_chungus_replaced = df
+    df_chungus_replaced['username'] = df_chungus_replaced['username'].str.replace('Chungus v2', 'Chungus')
+    df_chungus_replaced['content'] = df_chungus_replaced['content'].str.replace('Chungus v2', 'Chungus')
 
-'''
-badRowCondition = (df['content'] == 'No content') & (df['datetime'].isna())
+    df_chungus_replaced['username'] = df_chungus_replaced['username'].str.replace('Vũ Thái huy', 'Dan')
+    df_chungus_replaced['content'] = df_chungus_replaced['content'].str.replace('@Vũ Thái huy', '@Dan')
 
-filtered = df[~badRowCondition]
+    df_chungus_replaced.to_json(json_path, orient='records', indent=4)
 
-filtered.to_json('table_messages.json', orient='records', indent=4)
+def postClean(json_path):
+    df_sorted = pd.read_json(json_path, dtype=False)
+    df_sorted = df_sorted[~(df_sorted['datetime'].isnull() & df_sorted['content'].isnull())]
+    df = df_sorted
+    duplicate_content = df[df['datetime'].notna()]['content']
+    df_sorted = df[~(df['datetime'].isna() & df['content'].isin(duplicate_content))]
 
-df_filtered = df.drop_duplicates()
+    df_sorted = df_sorted.drop_duplicates(keep=False)
+    df_sorted.to_json(json_path, orient='records', indent=4)
 
+if __name__ == '__main__':
+    replaceName('../resources/json/table_messages.json')
 
-df_filtered.to_json('table_messages.json', orient='records', indent=4)
-null_datetime_rows = df[df['datetime'].isna()]
-
-duplicate_content = df[df['datetime'].notna()]['content']
-
-filtered_df = df[~(df['datetime'].isna() & df['content'].isin(duplicate_content))]
-
-filtered_df.to_json('table_messages.json', orient='records', indent=4)
-'''
-
-charlieM_rows = df[df['username'] == 'Charlie M']
-charlieM_duplicated_content = charlieM_rows['content']
-
-print(charlieM_duplicated_content)
-print(len(charlieM_duplicated_content))
-
-deletedRowBool = (df['username'] == 'Charlie M') & (df['content'].isin(charlieM_duplicated_content))
-
-df_new = df[~deletedRowBool]
-
-
-charlieM_rows = df_new[df_new['username'] == 'Charlie M']
-charlieM_duplicated_content = charlieM_rows['content']
-
-print(charlieM_duplicated_content)
-print(len(charlieM_duplicated_content))
-df_new.to_json('table_messages.json', orient='records', indent=4)
