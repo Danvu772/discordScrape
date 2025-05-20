@@ -1,8 +1,6 @@
 # Welcome to the Discord Web Scraper
 
-This python tool will scrape all of your messages and can process your data into JSON.
-
-The tool requires two steps, running discordScrape.py, and running tableParse.py after discordScrape.py finishes. 
+This python tool will scrape all of your messages and processes your data into JSON.
 
 As of now, the tool works <i>very</i> slowly. In my experience, scraping approximately 201,873 messages took more than an hour, and it took another hour to parse the table after the html was found. not good numbers :(
 
@@ -35,9 +33,24 @@ discord_channel_link='https://discord.com/channels/random_numbers/more_random_nu
 ```
 
 ## Actually using this
-1. After your setup, run `python discordScrape.py` in the terminal in your project root directory
-2. The scraping will take a while, after the scrape, run `python tableParse.py`
+After your setup, run `python discordScrape.py` in the terminal in your project root directory
 
+It supports two modes:
+  - fullScrape: Scrape the entire channel history based on the Discord channel link in your .env file.
+  - sync: Scrape only new messages since the last saved message in the JSON file.
+
+Make sure to set the required environment variables in your .env file:
+  - profile_directory: Path to your Firefox profile for Selenium
+  - discord_channel_link: URL to the Discord channel to scrape
+
+#### Example
+```
+$ python discordScrape.py fullScrape    # Scrape your entire chat history
+
+$ python discordScrape.py sync          # Scrape up to last saved message 
+```
+
+To get the help message, you can simply use `python discordScrape.py` or `python discordScrape.py -h`
 
 # Todos
 - Fix variable names
