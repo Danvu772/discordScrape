@@ -46,7 +46,6 @@ Make sure to set the required environment variables in your .env file:
 #### Example
 ```
 $ python discordScrape.py fullScrape    # Scrape your entire chat history
-
 $ python discordScrape.py sync          # Scrape up to last saved message 
 ```
 
