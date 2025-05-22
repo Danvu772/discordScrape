@@ -32,8 +32,9 @@ def discordScrape(last_message_id):
     WebDriverWait(driver, 20).until(EC.presence_of_all_elements_located((By.XPATH, message_item_class_xpath_text)))
     message_list = driver.find_elements(By.XPATH, message_item_class_xpath)
     previous_first_message = message_list[-1]
-    if last_message_id is None and os.path.exists(json_path):
+    if os.path.exists(json_path) and last_message_id is not None:
         os.remove(json_path)
+    if last_message_id is None:
         parseHtml(previous_first_message.get_attribute('outerHTML'), json_path)
     else:
         parseHtml(previous_first_message.get_attribute('outerHTML'), temp_json_path)
@@ -89,6 +90,7 @@ def discordScrape(last_message_id):
             print('no more elements')
             break
         except StaleElementReferenceException:
+            print('stale element.. trying again XD')
             time.sleep(0.3)
             continue
         except KeyboardInterrupt:

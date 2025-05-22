@@ -2,7 +2,7 @@
 
 This python tool will scrape all of your messages and processes your data into JSON.
 
-As of now, the tool works <i>very</i> slowly. In my experience, scraping approximately 201,873 messages took more than an hour, and it took another hour to parse the table after the html was found. not good numbers :(
+As of now, the tool works <i>very</i> slowly. In my experience, scraping approximately 201,873 messages took 30-40 minutes.
 
 ## Setup
 
@@ -43,6 +43,8 @@ Make sure to set the required environment variables in your .env file:
   - profile_directory: Path to your Firefox profile for Selenium
   - discord_channel_link: URL to the Discord channel to scrape
 
+At the very last page accessed by the scraper, the scraper often stalls instead of automatically exiting, you may have to manually stop the program by pressing `ctl+c`.
+
 #### Example
 ```
 $ python discordScrape.py fullScrape    # Scrape your entire chat history
@@ -54,5 +56,5 @@ To get the help message, you can simply use `python discordScrape.py` or `python
 # Todos
 - Fix variable names
 - ~~Implement sync - implemented, time to test it~~
-- Fix reply id - it seems to be getting the message content instead
+- ~Fix reply id - it seems to be getting the message content instead~
 - Fix end of chat scraping

@@ -2,3 +2,4 @@ analysis/
 resources/
 .venv/
 .env
+__pycache__/

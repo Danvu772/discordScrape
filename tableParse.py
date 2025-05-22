@@ -40,9 +40,9 @@ def parseHtml(html, json_path):
                 message_content_div = contents_div.find('div', id=re.compile(r'message-content-\d+'))
 
             reply_id = None
-            repliedTextDiv = li.find('div', class_='repliedTextPreview_c19a55')
-            if repliedTextDiv:
-                replied_content_div = contents_div.find('div', id=re.compile(r'message-content-\d+'))
+            replied_text_div = li.find('div', class_='repliedTextPreview_c19a55')
+            if replied_text_div:
+                replied_content_div = replied_text_div.find('div', id=re.compile(r'message-content-\d+'))
                 if replied_content_div:
                     match = re.search(r'message-content-(\d+)', replied_content_div.get('id'))
                     reply_id = match.group(1) if match else None
@@ -115,13 +115,19 @@ def combine_json(json_path, temp_json):
 
 
 def main():
-    path = 'resources/json/test_json.json'
-    if os.path.exists(path):
-        os.remove(path)
-    with open('resources/html/output.html', 'r', encoding='utf-8') as file:
-        parseHtml(file.read(), path)
+    json_path = 'resources/json/table_messages.json'
+    df = pd.read_json(json_path, orient='records', dtype=False)
+    df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
+    df_sorted = df.sort_values(by='datetime', ascending=True)
+    df_sorted.to_json(json_path, orient='records', indent=4)
 
-    finalCleanup(path)
+    jsonClean.replaceName(json_path)
+    jsonClean.postClean(json_path)
+
+
 
 if __name__ == '__main__':
-    main()
+    json_path = 'resources/json/table_messages.json'
+    df = pd.read_json(json_path, orient='records', dtype=False)
+
+    print(len(df))
